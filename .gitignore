@@ -1,0 +1,10 @@
+# IDE's
+.vs/
+.vscode/
+.idea/
+.ionide/
+*.DotSettings.user
+
+# Build artifacts
+obj/
+bin/
