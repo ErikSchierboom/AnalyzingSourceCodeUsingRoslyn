@@ -8,3 +8,6 @@
 # Build artifacts
 obj/
 bin/
+
+# Other
+.DS_Store
