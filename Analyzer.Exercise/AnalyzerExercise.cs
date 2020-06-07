@@ -7,6 +7,6 @@ public static class AnalyzerExercise
 
     public static string Greeting(string name)
     {
-        return $"Hello {name}!";
+        return "Hello " + name + "!";
     }
 }
