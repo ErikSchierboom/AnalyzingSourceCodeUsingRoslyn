@@ -22,7 +22,7 @@ namespace TestRunner
 
             var workspace = MSBuildWorkspace.Create();
 
-            var project = await workspace.OpenProjectAsync(@"/Users/erik/Code/AnalyzingSourceCodeUsingRoslyn/TestRunner.Exercise/TestRunner.Exercise.csproj");
+            var project = await workspace.OpenProjectAsync(@"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\TestRunner.Exercise\TestRunner.Exercise.csproj");
             Process.Start("dotnet", $"restore {project.FilePath}").WaitForExit(); 
             
             var tests = project.Documents.Single(document => document.Name == "TestRunnerExerciseTests.cs");
@@ -41,18 +41,15 @@ namespace TestRunner
             fileStream.Close();
 
             Assembly.LoadFrom(compilation.SourceModule.Name);
-
+            
             var finished = new ManualResetEventSlim();
-            
-            Assembly.LoadFrom(compilation.SourceModule.Name);
-            
             var runner = AssemblyRunner.WithoutAppDomain(compilation.SourceModule.Name);
             runner.OnTestFailed += info => Console.WriteLine($"[FAIL] {info.TestDisplayName}: {info.ExceptionMessage}");
             runner.OnTestPassed += info => Console.WriteLine($"[SUCCESS] {info.TestDisplayName}");
             runner.OnTestSkipped += info => Console.WriteLine($"[SKIPPED] {info.TestDisplayName}");
             runner.OnExecutionComplete += info => finished.Set();
-            runner.Start();
             
+            runner.Start();
             finished.Wait();
         }
 

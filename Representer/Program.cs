@@ -19,7 +19,7 @@ namespace Representer
 
             var workspace = MSBuildWorkspace.Create();
 
-            var project = await workspace.OpenProjectAsync(@"/Users/erik/Code/AnalyzingSourceCodeUsingRoslyn/Representer.Exercise/Representer.Exercise.csproj");
+            var project = await workspace.OpenProjectAsync(@"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\Representer.Exercise.csproj");
             var exercise = project.Documents.Single(document => document.Name == "RepresenterExercise.cs");
 
             var representation = await exercise.GetSyntaxRootAsync();
