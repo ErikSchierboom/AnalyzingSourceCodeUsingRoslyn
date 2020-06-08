@@ -17,8 +17,8 @@ namespace Representer
             var project = await workspace.OpenProjectAsync(@"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\Representer.Exercise.csproj");
             var exercise = project.Documents.Single(document => document.Name == "RepresenterExercise.cs");
 
-            var representation = await exercise.GetSyntaxRootAsync();
-            var representationFile = Path.Combine(Path.GetDirectoryName(project.FilePath), "representation.txt");
+            var root = await exercise.GetSyntaxRootAsync();
+            var outputPath = Path.Combine(Path.GetDirectoryName(project.FilePath), "representation.txt");
 
         }
     }
