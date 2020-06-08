@@ -12,7 +12,9 @@ namespace TestRunner
             MSBuildLocator.RegisterDefaults();
 
             var workspace = MSBuildWorkspace.Create();
-            var project = await workspace.OpenProjectAsync(@"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\TestRunner.Exercise\TestRunner.Exercise.csproj");
+            
+            var projectFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\TestRunner.Exercise\TestRunner.Exercise.csproj";
+            var project = await workspace.OpenProjectAsync(projectFilePath);
             
             Console.WriteLine("Hello from the Test Runner!");
         }

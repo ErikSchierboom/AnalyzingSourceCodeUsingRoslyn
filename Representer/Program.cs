@@ -14,10 +14,13 @@ namespace Representer
             MSBuildLocator.RegisterDefaults();
 
             var workspace = MSBuildWorkspace.Create();
-            var project = await workspace.OpenProjectAsync(@"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\Representer.Exercise.csproj");
-            var exercise = project.Documents.Single(document => document.Name == "RepresenterExercise.cs");
+            
+            var projectFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\Representer.Exercise.csproj";
+            var project = await workspace.OpenProjectAsync(projectFilePath);
+            
+            var implementation = project.Documents.Single(document => document.Name == "RepresenterExercise.cs");
 
-            var root = await exercise.GetSyntaxRootAsync();
+            var root = await implementation.GetSyntaxRootAsync();
             var outputPath = Path.Combine(Path.GetDirectoryName(project.FilePath), "representation.txt");
 
         }
