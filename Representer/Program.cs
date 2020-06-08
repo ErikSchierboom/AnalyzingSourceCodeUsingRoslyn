@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
@@ -17,8 +18,8 @@ namespace Representer
             var exercise = project.Documents.Single(document => document.Name == "RepresenterExercise.cs");
 
             var representation = await exercise.GetSyntaxRootAsync();
-            
-            Console.WriteLine("Hello from the Representer!");
+            var representationFile = Path.Combine(Path.GetDirectoryName(project.FilePath), "representation.txt");
+
         }
     }
 }
