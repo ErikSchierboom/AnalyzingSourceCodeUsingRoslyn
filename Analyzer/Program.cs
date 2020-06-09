@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -10,7 +9,7 @@ namespace Analyzer
 {
     class Program
     {
-        static async Task Main()
+        static void Main()
         {
             var implementationFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Analyzer.Exercise\AnalyzerExercise.cs";
             var tree = CSharpSyntaxTree.ParseText(File.ReadAllText(implementationFilePath));
