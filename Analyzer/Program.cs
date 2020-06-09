@@ -1,11 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.MSBuild;
 
 namespace Analyzer
 {
@@ -13,14 +12,9 @@ namespace Analyzer
     {
         static async Task Main()
         {
-            MSBuildLocator.RegisterDefaults();
-
-            var workspace = MSBuildWorkspace.Create();
-
-            var project = await workspace.OpenProjectAsync(@"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Analyzer.Exercise\Analyzer.Exercise.csproj");
-            var exercise = project.Documents.Single(document => document.Name == "AnalyzerExercise.cs");
-
-            var root = await exercise.GetSyntaxRootAsync();
+            var implementationFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Analyzer.Exercise\AnalyzerExercise.cs";
+            var tree = CSharpSyntaxTree.ParseText(File.ReadAllText(implementationFilePath));
+            var root = tree.GetRoot();
 
             if (UsesMethodOverloading(root))
             {
