@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace Analyzer
 {
     class Program
     {
-        static async Task Main()
+        static void Main()
         {
+            var implementationFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Analyzer.Exercise\AnalyzerExercise.cs";
+            var implementation = File.ReadAllText(implementationFilePath);
+            
             Console.WriteLine("Hello from the Analyzer!");
         }
     }
