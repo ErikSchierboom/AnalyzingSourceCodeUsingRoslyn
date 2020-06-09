@@ -5,7 +5,7 @@ namespace Representer
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var implementationFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\RepresenterExercise.cs";
             var implementation = File.ReadAllText(implementationFilePath);
