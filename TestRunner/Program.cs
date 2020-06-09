@@ -20,13 +20,13 @@ namespace TestRunner
         {
             MSBuildLocator.RegisterDefaults();
 
-            var workspace = MSBuildWorkspace.Create();
+            var projectFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\TestRunner.Exercise\TestRunner.Exercise.csproj";
+            Process.Start("dotnet", $"restore {projectFilePath}").WaitForExit();
 
-            var project = await workspace.OpenProjectAsync(@"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\TestRunner.Exercise\TestRunner.Exercise.csproj");
-            Process.Start("dotnet", $"restore {project.FilePath}").WaitForExit(); 
+            var workspace = MSBuildWorkspace.Create();
+            var project = await workspace.OpenProjectAsync(projectFilePath);
             
             var tests = project.Documents.Single(document => document.Name == "TestRunnerExerciseTests.cs");
-
             var root = await tests.GetSyntaxRootAsync();
             root = new UnskipTests().Visit(root);
             tests = tests.WithSyntaxRoot(root);
@@ -36,9 +36,7 @@ namespace TestRunner
             var errors = diagnostics.Count(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
             Console.WriteLine($"Diagnostics: {diagnostics.Length}. Errors: {errors}");
 
-            var fileStream = new FileStream(compilation.SourceModule.Name, FileMode.Create);
-            compilation.Emit(fileStream);
-            fileStream.Close();
+            compilation.Emit(compilation.SourceModule.Name);
 
             Assembly.LoadFrom(compilation.SourceModule.Name);
             
