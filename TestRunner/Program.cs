@@ -43,8 +43,8 @@ namespace TestRunner
             var finished = new ManualResetEventSlim();
             var runner = AssemblyRunner.WithoutAppDomain(compilation.SourceModule.Name);
             runner.OnTestFailed += info => Console.WriteLine($"[FAIL] {info.TestDisplayName}: {info.ExceptionMessage}");
-            runner.OnTestPassed += info => Console.WriteLine($"[SUCCESS] {info.TestDisplayName}");
-            runner.OnTestSkipped += info => Console.WriteLine($"[SKIPPED] {info.TestDisplayName}");
+            runner.OnTestPassed += info => Console.WriteLine($"[PASS] {info.TestDisplayName}");
+            runner.OnTestSkipped += info => Console.WriteLine($"[SKIP] {info.TestDisplayName}");
             runner.OnExecutionComplete += info => finished.Set();
             
             runner.Start();
