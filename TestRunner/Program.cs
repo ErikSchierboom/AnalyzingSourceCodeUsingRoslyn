@@ -10,7 +10,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.MSBuild;
+using Xunit;
 using Xunit.Runners;
+using Xunit.Sdk;
 
 namespace TestRunner
 {
@@ -36,19 +38,32 @@ namespace TestRunner
             var errors = diagnostics.Count(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
             Console.WriteLine($"Diagnostics: {diagnostics.Length}. Errors: {errors}");
 
-            compilation.Emit(compilation.SourceModule.Name);
+            var memoryStream = new MemoryStream();
+            compilation.Emit(memoryStream);
 
-            Assembly.LoadFrom(compilation.SourceModule.Name);
+            var assembly = Assembly.Load(memoryStream.ToArray());
+            var assemblyInfo = Reflector.Wrap(assembly);
+            var testAssembly = new TestAssembly(assemblyInfo);
             
-            var finished = new ManualResetEventSlim();
-            var runner = AssemblyRunner.WithoutAppDomain(compilation.SourceModule.Name);
-            runner.OnTestFailed += info => Console.WriteLine($"[FAIL] {info.TestDisplayName}: {info.ExceptionMessage}");
-            runner.OnTestPassed += info => Console.WriteLine($"[SUCCESS] {info.TestDisplayName}");
-            runner.OnTestSkipped += info => Console.WriteLine($"[SKIPPED] {info.TestDisplayName}");
-            runner.OnExecutionComplete += info => finished.Set();
-            
-            runner.Start();
-            finished.Wait();
+            var executionMessageSink = new TestMessageSink();
+            executionMessageSink.Execution.TestFailedEvent += args => Console.WriteLine($"[FAIL] {args.Message.TestCase.DisplayName}");
+            executionMessageSink.Execution.TestSkippedEvent += args => Console.WriteLine($"[SKIP] {args.Message.TestCase.DisplayName}");
+            executionMessageSink.Execution.TestPassedEvent += args => Console.WriteLine($"[PASS] {args.Message.TestCase.DisplayName}");
+
+            var discoverySink = new TestDiscoverySink();
+            var discoverer = new XunitTestFrameworkDiscoverer(assemblyInfo, new NullSourceInformationProvider(), new TestMessageSink());
+            discoverer.Find(false, discoverySink, TestFrameworkOptions.ForDiscovery());
+            discoverySink.Finished.WaitOne();
+
+            var testCases = discoverySink.TestCases.Cast<IXunitTestCase>();
+
+            var assemblyRunner = new XunitTestAssemblyRunner(
+                testAssembly,
+                testCases,
+                new TestMessageSink(), 
+                executionMessageSink,
+                TestFrameworkOptions.ForExecution());
+            await assemblyRunner.RunAsync();
         }
 
         class UnskipTests : CSharpSyntaxRewriter
