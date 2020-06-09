@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.MSBuild;
 
 namespace Representer
 {
@@ -15,14 +12,11 @@ namespace Representer
     {
         static async Task Main(string[] args)
         {
-            MSBuildLocator.RegisterDefaults();
+            var exerciseFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\RepresenterExercise.cs";
+            var representationFile = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\representation.txt";
 
-            var workspace = MSBuildWorkspace.Create();
-
-            var project = await workspace.OpenProjectAsync(@"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\Representer.Exercise.csproj");
-            var exercise = project.Documents.Single(document => document.Name == "RepresenterExercise.cs");
-
-            var representation = await exercise.GetSyntaxRootAsync();
+            var tree = CSharpSyntaxTree.ParseText(File.ReadAllText(exerciseFilePath));
+            var representation = tree.GetRoot();
 
             representation = new RemoveUsingStatements().Visit(representation);
             representation = new RemoveComments().Visit(representation);
@@ -33,7 +27,6 @@ namespace Representer
             representation = new AddBracesToIfOrElse().Visit(representation);
             representation = new NormalizeIdentifiers().Visit(representation);
 
-            var representationFile = Path.Combine(Path.GetDirectoryName(exercise.FilePath), "representation.txt");
             File.WriteAllText(representationFile, representation.NormalizeWhitespace().ToFullString());
             
             Console.WriteLine("Hello from the Representer!");
