@@ -11,8 +11,8 @@ namespace Representer
     {
         static void Main(string[] args)
         {
-            var exerciseFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\RepresenterExercise.cs";
-            var representationFile = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\representation.txt";
+            var exerciseFilePath = @"C:\Code\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\RepresenterExercise.cs";
+            var representationFile = @"C:\Code\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\representation.txt";
 
             var tree = CSharpSyntaxTree.ParseText(File.ReadAllText(exerciseFilePath));
             var representation = tree.GetRoot();

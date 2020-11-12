@@ -20,7 +20,7 @@ namespace TestRunner
         {
             MSBuildLocator.RegisterDefaults();
 
-            var projectFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\TestRunner.Exercise\TestRunner.Exercise.csproj";
+            var projectFilePath = @"C:\Code\AnalyzingSourceCodeUsingRoslyn\TestRunner.Exercise\TestRunner.Exercise.csproj";
             Process.Start("dotnet", $"restore {projectFilePath}").WaitForExit();
 
             var workspace = MSBuildWorkspace.Create();

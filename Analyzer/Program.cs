@@ -11,7 +11,7 @@ namespace Analyzer
     {
         static void Main()
         {
-            var implementationFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Analyzer.Exercise\AnalyzerExercise.cs";
+            var implementationFilePath = @"C:\Code\AnalyzingSourceCodeUsingRoslyn\Analyzer.Exercise\AnalyzerExercise.cs";
             var tree = CSharpSyntaxTree.ParseText(File.ReadAllText(implementationFilePath));
             var root = tree.GetRoot();
 
