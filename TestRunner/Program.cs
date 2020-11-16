@@ -7,7 +7,7 @@ namespace TestRunner
     {
         static async Task Main()
         {   
-            var projectFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\TestRunner.Exercise\TestRunner.Exercise.csproj";
+            var projectFilePath = @"C:\Code\AnalyzingSourceCodeUsingRoslyn\TestRunner.Exercise\TestRunner.Exercise.csproj";
 
             Console.WriteLine("Hello from the Test Runner!");
         }

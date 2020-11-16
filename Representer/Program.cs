@@ -7,13 +7,13 @@ namespace Representer
     {
         static void Main()
         {
-            var implementationFilePath = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\RepresenterExercise.cs";
+            var implementationFilePath = @"C:\Code\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\RepresenterExercise.cs";
             var implementation = File.ReadAllText(implementationFilePath);
 
             var tree = CSharpSyntaxTree.ParseText(implementation);
             var root = tree.GetRoot();
             
-            // var representationFile = @"C:\Programmeren\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\representation.txt";
+            // var representationFile = @"C:\Code\AnalyzingSourceCodeUsingRoslyn\Representer.Exercise\representation.txt";
             // TODO: write representation to file
         }
     }
