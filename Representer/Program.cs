@@ -161,6 +161,11 @@ namespace Representer
     {
         public override SyntaxNode? VisitVariableDeclaration(VariableDeclarationSyntax node)
         {
+            if (node.Type.IsVar)
+            {
+                return base.VisitVariableDeclaration(node);    
+            }
+
             return base.VisitVariableDeclaration(node.WithType(SyntaxFactory.IdentifierName("var")));
         }
     }
